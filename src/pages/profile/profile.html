@@ -1,20 +1,16 @@
+
 <ion-header>
 
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Usuarios</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
-  <ion-list>
-    <button ion-item *ngFor="let item of items">
-      <h2>{{ item.nome }} ({{ item.email }})</h2>
-    </button>
-  </ion-list>
-
+  <h2 text-center>{{ usuario?.nome }}</h2>
+  <p text-center>{{ usuario?.email }}</p>
 </ion-content>
