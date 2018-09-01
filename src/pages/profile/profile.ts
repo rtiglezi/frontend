@@ -12,6 +12,7 @@ import { UsuarioService } from '../../services/domain/usuario.service';
 export class ProfilePage {
 
   usuario: UsuarioDTO;
+  localUser = this.storage.getLocalUser();
 
   constructor(
       public navCtrl: NavController, 
@@ -21,9 +22,8 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    let localUser = this.storage.getLocalUser();
-    if (localUser && localUser.email){
-      this.usuarioService.findByEmail(localUser.email)
+    if (this.localUser && this.localUser.email){
+      this.usuarioService.findByEmail(this.localUser.email)
         .subscribe(response => {
           this.usuario = response;
         },
@@ -35,6 +35,21 @@ export class ProfilePage {
     } else {
       this.navCtrl.setRoot('HomePage');
     }
+  }
+
+  isAdmin() : boolean {
+    if (this.localUser && this.localUser.perfis.indexOf('ADMIN')!=-1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  goTo(page) {
+    this.navCtrl.push(page);
   }
 
 }

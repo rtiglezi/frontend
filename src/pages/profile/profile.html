@@ -10,7 +10,53 @@
 
 </ion-header>
 
-<ion-content padding>
-  <h2 text-center>{{ usuario?.nome }}</h2>
-  <p text-center>{{ usuario?.email }}</p>
+<ion-content>
+
+  <ion-card>
+      <ion-card-header>
+        <p text-center>{{ usuario?.nome }}</p>
+        <p text-center>{{ usuario?.email }}</p>
+      </ion-card-header>
+  </ion-card>
+ 
+  <ion-card *ngIf="isAdmin()==true">
+        <ion-card-header>
+          Administrar o aplicativo
+        </ion-card-header>
+        <ion-list>
+          <button ion-item (click)="goTo('UsuariosPage')">
+            <ion-icon name="people" item-people></ion-icon>
+            Usuários
+          </button>
+          <button ion-item>
+              <ion-icon name="build" item-build></ion-icon>
+              [ opção 2 ]
+          </button>
+          <button ion-item>
+              <ion-icon name="build" item-build></ion-icon>
+              [ opção 3 ]
+          </button>
+        </ion-list>
+  </ion-card>
+
+
+  <ion-card>
+      <ion-card-header>
+          [ título ]
+      </ion-card-header>
+      <ion-list>
+        <button ion-item>
+          <ion-icon name="play" item-play></ion-icon>
+          [ opção 1 ]
+        </button>
+        <button ion-item>
+            <ion-icon name="play" item-play></ion-icon>
+          [ opção 2 ]
+          </button>
+      </ion-list>
+  </ion-card>
+
+
+  
 </ion-content>
+
