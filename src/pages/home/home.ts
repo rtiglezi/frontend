@@ -32,13 +32,26 @@ export class HomePage {
     this.menu.swipeEnable(true);
   }
 
-  login() {
-    this.auth.authenticate(this.creds)
+  ionViewDidEnter(){
+    this.auth.refreshToken()
     .subscribe(response => {
       this.auth.succefulLogin(response.headers.get('Authorization'));
       this.navCtrl.setRoot('UsuariosPage');
     },
-    error => {})
+    error => {});
+  }
+
+  login() {
+    this.auth.authenticate(this.creds)
+    .subscribe(response => {
+      this.auth.succefulLogin(response.headers.get('Authorization'));
+      this.navCtrl.setRoot('ProfilePage');
+    },
+    error => {});
+  }
+
+  signup() {
+    this.navCtrl.push('SignupPage');
   }
 
 }
