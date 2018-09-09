@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioDTO } from '../../models/usuario.dto';
 import { UsuarioService } from '../../services/domain/usuario.service';
@@ -18,7 +18,8 @@ export class ProfilePage {
       public navCtrl: NavController, 
       public navParams: NavParams,
       public storage: StorageService,
-      public usuarioService: UsuarioService) {
+      public usuarioService: UsuarioService
+    ) {
   }
 
   ionViewDidLoad() {

@@ -12,6 +12,8 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
+import { ChangepassPage } from '../pages/changepass/changepass';
+import { ContaService } from '../services/domain/conta.service';
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
     AuthInterceptorProvider,
     ErrorInterceptorProvider,
     AuthService,
-    StorageService
+    StorageService,
+    ContaService
   ]
 })
 export class AppModule {}

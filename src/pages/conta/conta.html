@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Contas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+          <ion-card *ngFor="let item of items">
+              <ion-item>
+                <ion-row>
+                  <ion-col text-left class="nome-conta">
+                    {{ item.nome }}
+                    <p>Tipo: {{ item.tipoConta }}</p>
+                  </ion-col>
+                  <ion-col text-right color="primary">
+                    <button ion-button>
+                     <ion-icon name="create" class="edit-icon" (click)="update(item)"></ion-icon>
+                    </button>
+                    <button ion-button color="danger"(click)="delete(item)">
+                      <ion-icon name="trash" class="del-icon"></ion-icon>  
+                    </button>
+                  </ion-col>
+                </ion-row>
+                <hr/>
+                <p>Último atualização: AGOSTO/2018</p>
+                <p>Saldo: R$ 1500,00</p>
+              </ion-item>
+            </ion-card>
+
+
+            <ion-row>
+              <ion-col text-center>
+                  <button color="primary" ion-button icon-cash (click)="create()">
+                      <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
+                      Adicionar Conta
+                    </button>
+              </ion-col>
+            </ion-row>
+
+</ion-content>

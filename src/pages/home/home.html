@@ -1,18 +1,36 @@
-<ion-content padding>
-  <h3>UpMoney</h3>
-  <img src="assets/imgs/tela-inicial.png" alt="logo">
+<ion-content class="bg-page">
+  <div padding text-center>
+    
+    <div padding text-center class="title">
+      <img src="assets/imgs/logo-upmoney.png">
+      UpMoney
+    </div>
+  </div>
 
-  <form>
-    <ion-item>
-      <ion-label stacked>Email</ion-label>
-      <ion-input [(ngModel)]="creds.email" name="email" type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Senha</ion-label>
-      <ion-input [(ngModel)]="creds.senha" name="senha" type="password"></ion-input>
-    </ion-item>
-    <button ion-button block (click)="login()">Entrar</button>
-    <button ion-button block outline (click)="signup()">Registrar</button>
-  </form>
-
+  <div padding>
+    <form>
+        <ion-list>
+          <ion-item padding-right class="bg-text">
+            <ion-label>
+              <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+            </ion-label>
+            <ion-input [(ngModel)]="creds.email" name="email" type="email" required placeholder="Email *"></ion-input>
+          </ion-item>
+          <ion-item class="bg-text">
+            <ion-label>
+              <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+            </ion-label>
+              <ion-input [(ngModel)]="creds.senha" name="senha" type="password" required placeholder="Password *"></ion-input>
+          </ion-item>
+        </ion-list>
+        <button (click)="login()"  ion-button full color="danger">Logar</button>
+        <hr/>
+        <button (click)="signup()" ion-button full color="default">Registrar</button>
+        <hr/>
+        <p class="esqueci-senha" (click)="esqueciSenha()">Esqueci a senha!</p>
+    </form>
+  </div>
 </ion-content>
+
+
+

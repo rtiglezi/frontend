@@ -5,27 +5,31 @@
 </ion-header>
 
 <ion-content padding>
+
+    <ion-card class="card-first">
+        <ion-card-header class="card-header">
+            <div>Cadastro de Usuário</div>
+            Informe seus dados.
+        </ion-card-header>
+    </ion-card>
+
+  
   <form [formGroup]="formGroup" (ngSubmit)="signupUser(); $event.preventDefault()">
     <ion-item>
       <ion-label stacked>Nome*</ion-label>
       <ion-input formControlName="nome" type="text"></ion-input>
     </ion-item>
-    <p class="danger" *ngIf="formGroup.controls.nome.dirty && formGroup.controls.nome.errors" margin-left>Valor inválido</p>
+    <div class="error-form" *ngIf="formGroup.controls.nome.dirty && formGroup.controls.nome.errors" margin-left>Valor inválido</div>
     <ion-item>
       <ion-label stacked>Email*</ion-label>
-      <ion-input formControlName="email" type="text"></ion-input>
+      <ion-input formControlName="email" type="email"></ion-input>
     </ion-item>
-    <p class="danger" *ngIf="formGroup.controls.email.dirty && formGroup.controls.email.errors" margin-left>Valor inválido</p>
-    <ion-item>
-      <ion-label stacked>Login*</ion-label>
-      <ion-input formControlName="login" type="text"></ion-input>
-    </ion-item>
-    <p class="danger" *ngIf="formGroup.controls.login.dirty && formGroup.controls.login.errors" margin-left>Valor inválido</p>
+    <div class="error-form" *ngIf="formGroup.controls.email.dirty && formGroup.controls.email.errors" margin-left>Valor inválido</div>
     <ion-item>
       <ion-label stacked>Senha*</ion-label>
       <ion-input formControlName="senha" type="password"></ion-input>
     </ion-item> 
-    <p class="danger" *ngIf="formGroup.controls.senha.dirty && formGroup.controls.senha.errors" margin-left>Valor inválido</p>
-    <button ion-button block type="submit" [disabled]="formGroup.invalid">Criar conta</button>
+    <div class="error-form" *ngIf="formGroup.controls.senha.dirty && formGroup.controls.senha.errors" margin-left>Valor inválido</div>
+    <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">Criar conta</button>
   </form>
 </ion-content>

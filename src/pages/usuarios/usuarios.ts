@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { UsuarioService } from '../../services/domain/usuario.service';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioDTO } from '../../models/usuario.dto';
@@ -19,7 +19,9 @@ export class UsuariosPage {
     public navParams: NavParams,
     public usuarioService: UsuarioService,
     public http: HttpClient,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController
+  ) {
   }
 
   ionViewDidLoad() {
@@ -27,7 +29,7 @@ export class UsuariosPage {
   }
 
   loadData() {
-    let loader = this.presentLoading();
+    let loader = this.presentLoading("Carregando os usuários cadastrados...");
     this.usuarioService.findPage(this.page, 20)
       .subscribe(response => {
         this.items = this.items.concat(response["content"]);
@@ -42,10 +44,53 @@ export class UsuariosPage {
       });
   }
 
+  delete(obj) {
+    let alert = this.alertCtrl.create({
+      title: "Exclusão de registro.",
+      message: "Deseja realmente excluir este usuário?",
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            let loader = this.presentLoading("Excluindo o registro...");
+            this.usuarioService.delete(obj.id)
+            .subscribe(response => {
+              let index = this.items.indexOf(obj);
+              this.items.splice(index, 1);
+              loader.dismiss();
+              this.restOk("Sucesso.", "O usuário foi deletado.");
+            },
+            error => {
+              loader.dismiss();
+            });
+          }
+        },
+        {
+          text: "Não"
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  restOk(ttl : string, msg : string) {
+    let alert = this.alertCtrl.create({
+      title: ttl,
+      message: msg,
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Ok'
+        }
+      ]
+    });
+    alert.present();
+  }
   
-  presentLoading() {
+  presentLoading(msg : string) {
     let loader = this.loadingCtrl.create({
-      content: "Carregando..."
+      content: msg
     });
     loader.present();
     return loader;

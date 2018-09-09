@@ -1,0 +1,24 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title>Conta</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+  
+      <ion-card class="card-first">
+          <ion-card-header class="card-header">
+              <div>Cadastro de Conta</div>
+          </ion-card-header>
+      </ion-card>
+  
+    
+    <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
+      <ion-item>
+        <ion-label stacked>Nome*</ion-label>
+        <ion-input formControlName="nome" type="text"></ion-input>
+      </ion-item>
+      <div class="error-form" *ngIf="formGroup.controls.nome.dirty && formGroup.controls.nome.errors" margin-left>Valor inválido</div>
+      <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
+    </form>
+  </ion-content>

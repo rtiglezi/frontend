@@ -1,14 +1,18 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { API_CONFIG } from "../../config/api.config";
 import { UsuarioDTO } from "../../models/usuario.dto";
 import { Observable } from "rxjs/Rx";
 import { StorageService } from "../storage.service";
+import { NovasCredenciaisDTO } from "../../models/novasCredenciais";
 
 @Injectable()
 export class UsuarioService {
     
-    constructor(public http: HttpClient, public storage: StorageService) {
+    constructor(
+        public http: HttpClient, 
+        public storage: StorageService
+    ) {
 
     }
 
@@ -31,4 +35,18 @@ export class UsuarioService {
         );
     }
 
+    changePass(obj: NovasCredenciaisDTO) {
+        return this.http.put(
+            `${API_CONFIG.baseUrl}/auth/change`,
+            obj,
+            {
+                observe: 'response',
+                responseType: 'text'
+            }
+        )
+    }
+
+    delete(id : number){
+        return this.http.delete(`${API_CONFIG.baseUrl}/usuarios/${id}`)
+    };
 }

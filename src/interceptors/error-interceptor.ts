@@ -27,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             console.log(errorObj);
 
             switch(errorObj.status){
-                
+
                 case 401:
                 this.handle401();
                 break;
@@ -48,6 +48,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }) as any;
     }
 
+    
     handle401() {
         let alert = this.alertCtrl.create({
             title: 'Erro 401: falha de autenticação',
