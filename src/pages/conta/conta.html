@@ -1,6 +1,9 @@
 <ion-header>
 
   <ion-navbar>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
     <ion-title>Contas</ion-title>
   </ion-navbar>
 
@@ -13,7 +16,7 @@
                 <ion-row>
                   <ion-col text-left class="nome-conta">
                     {{ item.nome }}
-                    <p>Tipo: {{ item.tipoConta }}</p>
+                    <p>Tipo: {{ item.tipoContaDescricao }}</p>
                   </ion-col>
                   <ion-col text-right color="primary">
                     <button ion-button>

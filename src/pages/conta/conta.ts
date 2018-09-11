@@ -13,7 +13,6 @@ export class ContaPage {
 
   items: ContaDTO[] = [];
   
-
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -57,12 +56,12 @@ export class ContaPage {
           text: 'Sim',
           handler: () => {
             this.contaService.delete(obj.id)
-            .subscribe(response => {
+            .subscribe(() => {
               let index = this.items.indexOf(obj);
               this.items.splice(index, 1);
               this.showOk("Registro deletado com sucesso.");
             },
-            error => {
+            () => {
             });
           }
         },
@@ -76,7 +75,7 @@ export class ContaPage {
 
   showOk(msg) {
     this.toast.create({ message: msg, position: 'middle', duration: 2000 }).present();
-    this.navCtrl.push('ContaPage');
+    this.navCtrl.setRoot('ContaPage');
   } 
 
 }

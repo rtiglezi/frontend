@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { ContaDTO } from '../../models/conta.dto';
 import { ContaService } from '../../services/domain/conta.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { StorageService } from '../../services/storage.service';
 
 @IonicPage()
 @Component({
@@ -13,23 +14,30 @@ export class ContaEditPage {
   
   model: ContaDTO;
   formGroup: FormGroup;
-  lblButton = "ddd";
+  lblButton = "";
+  tipoContaDescricao = this.navParams.data.tipoContaDescricao;
   
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams, 
       public modelService: ContaService,
       public formBuilder: FormBuilder,
+      public storage: StorageService,
       private toast: ToastController
-  ) {
-
-      this.formGroup = this.formBuilder.group({
-        id:   [navParams.data.id,''],
-        nome: [navParams.data.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(80)]]
-      });
-
-    }
+    ) {
+    this.createForm();
+  }
   
+   
+
+  createForm(){
+    this.formGroup = this.formBuilder.group({
+      id:        [this.navParams.data.id,''],
+      nome:      [this.navParams.data.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(80)]],
+      tipoConta: [this.navParams.data.tipoConta, [Validators.required]]
+    });
+  }
+
   ionViewDidLoad() {
     this.isNewData();
   }
@@ -49,11 +57,14 @@ export class ContaEditPage {
   save(){
     if (this.isNewData()) {
       
-      this.modelService.create(this.formGroup.value)
+     this.modelService.create(this.formGroup.value)
      .subscribe(() => {
       this.showOk("Registro adicionado com sucesso.");
       }, () => {});
+
+      console.log(this.formGroup.value);
     
+      
     } else {
   
       this.modelService.update(this.formGroup.value)
@@ -61,14 +72,15 @@ export class ContaEditPage {
         this.showOk("Registro editado com sucesso.");
        }, () => {});
 
+       console.log(this.formGroup.value);
+
     }
   }
 
 
   showOk(msg) {
     this.toast.create({ message: msg, position: 'middle', duration: 2000 }).present();
-    this.navCtrl.push('ContaPage');
+    this.navCtrl.setRoot('ContaPage');
   } 
-
 
 }
