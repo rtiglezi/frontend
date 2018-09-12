@@ -15,7 +15,7 @@ export class ContaEditPage {
   model: ContaDTO;
   formGroup: FormGroup;
   lblButton = "";
-  tipoContaDescricao = this.navParams.data.tipoContaDescricao;
+ 
   
   constructor(
       public navCtrl: NavController,

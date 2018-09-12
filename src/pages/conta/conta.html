@@ -9,27 +9,46 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
           <ion-card *ngFor="let item of items">
               <ion-item>
-                <ion-row>
-                  <ion-col text-left class="nome-conta">
-                    {{ item.nome }}
-                    <p>Tipo: {{ item.tipoContaDescricao }}</p>
-                  </ion-col>
-                  <ion-col text-right color="primary">
-                    <button ion-button>
-                     <ion-icon name="create" class="edit-icon" (click)="update(item)"></ion-icon>
-                    </button>
-                    <button ion-button color="danger"(click)="delete(item)">
-                      <ion-icon name="trash" class="del-icon"></ion-icon>  
-                    </button>
-                  </ion-col>
-                </ion-row>
-                <hr/>
-                <p>Último atualização: AGOSTO/2018</p>
-                <p>Saldo: R$ 1500,00</p>
+
+                  <ion-row>
+                      <ion-col>
+                        <strong>{{ item.nome }}</strong>
+                        <p>Tipo: {{ item.tipoContaDescricao }}</p>
+                      </ion-col>
+                      <ion-col align="right">
+                        <div class="div-buttom">
+                          <ion-icon name="create" (click)="update(item)"></ion-icon>
+                        </div>
+                        <div class="div-buttom">
+                          <ion-icon name="trash" (click)="delete(item)"></ion-icon>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+
+                  
+
+                  <hr/>
+
+                  <p>Último atualização: AGOSTO/2018</p>
+                  <p>Saldo: R$ 1500,00</p>
+                  
+                  <hr/>
+                  
+                  <ion-row>
+                    <ion-col>
+                      <div class="div-buttom">
+                      <ion-icon name="calculator" class="bottom-icon"></ion-icon>
+                      atualizar saldo
+                      </div>
+                     
+                    </ion-col>
+                  </ion-row>
+                  
+
               </ion-item>
             </ion-card>
 
