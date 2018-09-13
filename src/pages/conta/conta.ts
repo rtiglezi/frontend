@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, ToastController }
 import { ContaService } from '../../services/domain/conta.service';
 import { ContaDTO } from '../../models/conta.dto';
 
-
 @IonicPage()
 @Component({
   selector: 'page-conta',
@@ -12,6 +11,7 @@ import { ContaDTO } from '../../models/conta.dto';
 export class ContaPage {
 
   items: ContaDTO[] = [];
+  ultimoSaldo: Object[] = [];
   
   constructor(
     public navCtrl: NavController, 
@@ -34,6 +34,9 @@ export class ContaPage {
     this.contaService.readAll()
     .subscribe(response => {
       this.items = response;
+      response.map(m=>{
+        this.montaSaldo(m.id);
+      });
     },
     error => {
       if (error.status == 403) {
@@ -77,5 +80,36 @@ export class ContaPage {
     this.toast.create({ message: msg, position: 'middle', duration: 2000 }).present();
     this.navCtrl.setRoot('ContaPage');
   } 
+
+
+  montaSaldo(contaId : string) {
+    this.contaService.lastSaldo(contaId)
+      .subscribe(response  => {
+        if (response.length > 0) {
+          let obj = {conta: contaId, ano: response[response.length-1].ano, mes: response[response.length-1].mesDescricao, saldo: response[response.length-1].saldoMes};
+          this.ultimoSaldo.push(obj);
+        }
+        else {
+          let obj = {conta: contaId, saldo: null};
+          this.ultimoSaldo.push(obj);
+        }
+     },
+     error => {
+        if (error.status == 403) {
+        
+      }
+    });
+  }
+
+  mostraAtualizacao(conta, item, ano, mes, saldo)  {
+      if (conta == item) {
+          if (saldo)
+          {
+            return "Último saldo: R$ " + saldo + " (" + mes + "/" + ano + ")";
+          } else {
+            return "Sem registro de saldo.";
+          }
+      }
+  }
 
 }

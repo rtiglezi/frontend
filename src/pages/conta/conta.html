@@ -11,12 +11,14 @@
 
 <ion-content>
 
-          <ion-card *ngFor="let item of items">
+          <ion-card *ngFor="let item of items; index as i">
               <ion-item>
 
                   <ion-row>
                       <ion-col>
-                        <strong>{{ item.nome }}</strong>
+                        <strong>
+                         {{ item.nome }} 
+                        </strong>
                         <p>Tipo: {{ item.tipoContaDescricao }}</p>
                       </ion-col>
                       <ion-col align="right">
@@ -29,14 +31,15 @@
                       </ion-col>
                     </ion-row>
 
-                  
-
+                
                   <hr/>
 
-                  <p>Último atualização: AGOSTO/2018</p>
-                  <p>Saldo: R$ 1500,00</p>
+                  <p *ngFor="let us of ultimoSaldo">
+                   {{ mostraAtualizacao(us.conta, item.id, us.ano, us.mes, us.saldo) }}
+                  </p>
                   
                   <hr/>
+
                   
                   <ion-row>
                     <ion-col>

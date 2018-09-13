@@ -53,4 +53,9 @@ export class ContaService {
     delete(id : number){
         return this.http.delete(`${API_CONFIG.baseUrl}/contas/${id}`);
     };
+
+
+    lastSaldo(contaId){
+        return this.http.get<ContaDTO[]>(`${API_CONFIG.baseUrl}/contas/${contaId}/saldos`);
+    }
 }
