@@ -14,6 +14,7 @@ import { StorageService } from '../services/storage.service';
 import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
 import { ChangepassPage } from '../pages/changepass/changepass';
 import { ContaService } from '../services/domain/conta.service';
+import { SaldoService } from '../services/domain/saldo.service';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { ContaService } from '../services/domain/conta.service';
     ErrorInterceptorProvider,
     AuthService,
     StorageService,
-    ContaService
+    ContaService,
+    SaldoService
   ]
 })
 export class AppModule {}

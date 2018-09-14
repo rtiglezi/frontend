@@ -4,7 +4,7 @@
       <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
         </button>
-    <ion-title>Contas</ion-title>
+    <ion-title>Minhas contas</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -34,20 +34,15 @@
                 
                   <hr/>
 
-                  <p *ngFor="let us of ultimoSaldo">
-                   {{ mostraAtualizacao(us.conta, item.id, us.ano, us.mes, us.saldo) }}
-                  </p>
-                  
-                  <hr/>
-
                   
                   <ion-row>
                     <ion-col>
-                      <div class="div-buttom">
-                      <ion-icon name="calculator" class="bottom-icon"></ion-icon>
-                      atualizar saldo
+                      <div class="div-buttom" (click)="goSaldos(item)">
+                      <p>
+                        mês a mês
+                        <ion-icon name="calculator" class="bottom-icon"></ion-icon>
+                      </p>
                       </div>
-                     
                     </ion-col>
                   </ion-row>
                   
@@ -55,14 +50,15 @@
               </ion-item>
             </ion-card>
 
-
-            <ion-row>
+            
+            <ion-row padding>
               <ion-col text-center>
-                  <button color="primary" ion-button icon-cash (click)="create()">
-                      <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
-                      Adicionar Conta
-                    </button>
+                  <button color="secondary" ion-button block icon-cash (click)="create()">
+                     <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
+                     Criar Nova Conta
+                  </button>
               </ion-col>
             </ion-row>
+            
 
 </ion-content>

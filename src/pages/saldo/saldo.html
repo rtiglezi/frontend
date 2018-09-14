@@ -1,0 +1,51 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Saldos mensais</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+ 
+  <ion-card>
+    <ion-item>
+    <ion-row>
+      <ion-col>
+        <strong>
+          {{ item.nome }} 
+        </strong>
+        <p>Tipo: {{ item.tipoContaDescricao }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+
+  <hr/>
+
+  <div *ngFor="let item of itemsSaldo; index as i" class="div-saldos">
+      
+      <div class="div-buttom">
+          <ion-icon name="create" (click)="update(item)"></ion-icon>
+      </div>
+
+      {{ item.mesDescricao }}/{{ item.ano }} - Saldo: {{ item.saldoMes }}
+
+      <hr/>
+
+  </div>
+
+  <div padding>
+  <button color="secondary" ion-button block icon-cash padding (click)="create()">
+    <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
+    Novo Saldo Mensal
+  </button>
+  </div>
+
+  </ion-card>
+
+    
+
+
+</ion-content>

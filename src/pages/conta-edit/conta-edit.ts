@@ -45,10 +45,10 @@ export class ContaEditPage {
   
   isNewData() : boolean {
     if (!this.formGroup.value.id) {
-      this.lblButton = "Inserir"
+      this.lblButton = "Adicionar Conta"
       return true;
     } else {
-      this.lblButton = "Editar"
+      this.lblButton = "Editar Conta"
       return false;
     }
   }
@@ -79,7 +79,7 @@ export class ContaEditPage {
 
 
   showOk(msg) {
-    this.toast.create({ message: msg, position: 'middle', duration: 2000 }).present();
+    this.toast.create({ message: msg, position: 'bottom', duration: 2000 }).present();
     this.navCtrl.setRoot('ContaPage');
   } 
 

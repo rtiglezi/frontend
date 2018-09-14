@@ -1,0 +1,117 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ lblButton }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
+
+    <p class="text-label">Informe os detalhes do saldo mensal:</p>
+
+
+    <ion-item class="bg-text">
+      <ion-label>Ano:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="ano" type="number" placeholder="ex: 2018"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item>
+      <ion-label>Mês:</ion-label>
+      <ion-select formControlName="mes">
+        <ion-option value=1>Janeiro</ion-option>
+        <ion-option value=2>Fevereiro</ion-option>
+        <ion-option value=3>Março</ion-option>
+        <ion-option value=4>Abril</ion-option>
+        <ion-option value=5>Maio</ion-option>
+        <ion-option value=6>Junho</ion-option>
+        <ion-option value=7>Julho</ion-option>
+        <ion-option value=8>Agosto</ion-option>
+        <ion-option value=9>Setembro</ion-option>
+        <ion-option value=10>Outubro</ion-option>
+        <ion-option value=11>Novembro</ion-option>
+        <ion-option value=12>Dezembro</ion-option>
+      </ion-select>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Saldo mês anterior:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="saldoMesAnterior" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.saldoMesAnterior.dirty && formGroup.controls.saldoMesAnterior.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Soma receitas correntes:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="somaReceitasCorrentes" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.somaReceitasCorrentes.dirty && formGroup.controls.somaReceitasCorrentes.errors"
+      margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Soma receitas extras:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="somaReceitasExtras" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.somaReceitasExtras.dirty && formGroup.controls.somaReceitasExtras.errors"
+      margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Saldo do mês:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="saldoMes" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.saldoMes.dirty && formGroup.controls.saldoMes.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Soma gastos extras:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="somaGastosExtras" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.somaGastosExtras.dirty && formGroup.controls.somaGastosExtras.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-item class="bg-text">
+      <ion-label>Soma investimentos:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="somaInvestimentos" type="number" placeholder="valor em R$"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.somaInvestimentos.dirty && formGroup.controls.somaInvestimentos.errors"
+      margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
+  </form>
+</ion-content>
