@@ -22,11 +22,11 @@
                         <p>Tipo: {{ item.tipoContaDescricao }}</p>
                       </ion-col>
                       <ion-col align="right">
-                        <div class="div-buttom">
-                          <ion-icon name="create" (click)="update(item)"></ion-icon>
+                        <div class="div-buttom" (click)="update(item)">
+                          <ion-icon name="create"></ion-icon>
                         </div>
-                        <div class="div-buttom">
-                          <ion-icon name="trash" (click)="delete(item)"></ion-icon>
+                        <div class="div-buttom" (click)="delete(item)">
+                          <ion-icon name="trash"></ion-icon>
                         </div>
                       </ion-col>
                     </ion-row>

@@ -1,45 +1,42 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>{{ lblButton }}</ion-title>
-    </ion-navbar>
-  </ion-header>
-  
-  <ion-content padding>
-    
-    <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
+  <ion-navbar>
+    <ion-title>{{ lblButton }}</ion-title>
+  </ion-navbar>
+</ion-header>
 
+<ion-content padding>
 
-            
-            <p class="text-label">Informe os dados da conta:</p>   
-            
-             
-            <ion-item class="bg-text">
-              <ion-label>  
-                  <ion-icon ios="card" md="md-card"></ion-icon>
-              </ion-label>
-              <ion-input formControlName="nome" type="text" placeholder="Nome da conta *"></ion-input>
-            </ion-item>
-            <div class="error-form" *ngIf="formGroup.controls.nome.dirty && formGroup.controls.nome.errors" margin-left>Valor inválido</div>
-            
-            <div padding></div>
-            
-            <ion-list radio-group formControlName="tipoConta">
-                
-                <p class="text-label">Classifique esta conta:</p>   
-                <ion-item>
-                  <ion-label>Conta Corrente</ion-label>
-                  <ion-radio value=1></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Cartão de Crédito</ion-label>
-                  <ion-radio value=2></ion-radio>
-                </ion-item>
-                <ion-item>
-                    <ion-label>Conta Investimento</ion-label>
-                    <ion-radio value=3></ion-radio>
-                  </ion-item>
-              </ion-list>
-    
-      <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
-    </form>
-  </ion-content>
+  <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
+
+    <p class="text-label">Informe os dados da conta:</p>
+
+    <ion-item class="bg-text">
+      <ion-label>
+        <ion-icon ios="card" md="md-card"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="nome" type="text" placeholder="Nome da conta *"></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.nome.dirty && formGroup.controls.nome.errors" margin-left>Valor inválido</div>
+
+    <div padding></div>
+
+    <ion-list radio-group formControlName="tipoConta">
+
+      <p class="text-label">Classifique esta conta:</p>
+      <ion-item>
+        <ion-label>Conta Corrente</ion-label>
+        <ion-radio value=1></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Cartão de Crédito</ion-label>
+        <ion-radio value=2></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Conta Investimento</ion-label>
+        <ion-radio value=3></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
+  </form>
+</ion-content>

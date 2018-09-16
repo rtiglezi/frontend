@@ -8,20 +8,16 @@
 
   <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
 
-    <p class="text-label">Informe os detalhes do saldo mensal:</p>
+    <p class="text-label">Dados iniciais do extrato:</p>
 
-
-    <ion-item class="bg-text">
+    <ion-item>
       <ion-label>Ano:</ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="ano" type="number" placeholder="ex: 2018"></ion-input>
+      <ion-select formControlName="ano">
+        <ion-option *ngFor="let item of arrayAnos" [selected]="checkSel(item)" value={{item}}>{{item}}</ion-option>
+      </ion-select>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
-
-    <div padding></div>
-
+    
     <ion-item>
       <ion-label>Mês:</ion-label>
       <ion-select formControlName="mes">
@@ -41,73 +37,95 @@
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
 
-    <div padding></div>
-
     <ion-item class="bg-text">
-      <ion-label>Saldo mês anterior:</ion-label>
+      <ion-label>Saldo final do mês:</ion-label>
       <ion-label>
         <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
       </ion-label>
-      <ion-input formControlName="saldoMesAnterior" type="number" placeholder="valor em R$"></ion-input>
+      <ion-input formControlName="saldoMes" type="number" text-right></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.saldoMes.dirty && formGroup.controls.saldoMes.errors" margin-left>Valor inválido</div>
+
+    <ion-item class="bg-text">
+      <ion-label>Saldo do mês anterior:</ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="saldoMesAnterior" type="number" text-right></ion-input>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.saldoMesAnterior.dirty && formGroup.controls.saldoMesAnterior.errors" margin-left>Valor inválido</div>
 
+
     <div padding></div>
 
+
+
+    <p class="text-label">Totalização das Receitas (créditos):</p>
+
+
     <ion-item class="bg-text">
-      <ion-label>Soma receitas correntes:</ion-label>
+      <ion-label>
+        Receitas correntes:
+        <div class="div-tip">(ex.: salário, remuneração)</div>
+      </ion-label>
+
       <ion-label>
         <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
       </ion-label>
-      <ion-input formControlName="somaReceitasCorrentes" type="number" placeholder="valor em R$"></ion-input>
+      <ion-input formControlName="somaReceitasCorrentes" type="number" text-right></ion-input>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.somaReceitasCorrentes.dirty && formGroup.controls.somaReceitasCorrentes.errors"
       margin-left>Valor inválido</div>
 
-    <div padding></div>
-
     <ion-item class="bg-text">
-      <ion-label>Soma receitas extras:</ion-label>
+      <ion-label>Receitas extraordinárias:
+        <div class="div-tip">(ex.: restituição do IR, empréstimo etc)</div>
+      </ion-label>
       <ion-label>
         <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
       </ion-label>
-      <ion-input formControlName="somaReceitasExtras" type="number" placeholder="valor em R$"></ion-input>
+      <ion-input formControlName="somaReceitasExtras" type="number" text-right></ion-input>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.somaReceitasExtras.dirty && formGroup.controls.somaReceitasExtras.errors"
       margin-left>Valor inválido</div>
 
     <div padding></div>
 
+    <p class="text-label">Totalização dos Gastos (débitos):</p>
+
     <ion-item class="bg-text">
-      <ion-label>Saldo do mês:</ion-label>
+      <ion-label>Gastos extraordinários:
+        <div class="div-tip">(ex: compra de carro, reforma de casa)</div>
+      </ion-label>
       <ion-label>
         <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
       </ion-label>
-      <ion-input formControlName="saldoMes" type="number" placeholder="valor em R$"></ion-input>
-    </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.saldoMes.dirty && formGroup.controls.saldoMes.errors" margin-left>Valor inválido</div>
-
-    <div padding></div>
-
-    <ion-item class="bg-text">
-      <ion-label>Soma gastos extras:</ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaGastosExtras" type="number" placeholder="valor em R$"></ion-input>
+      <ion-input formControlName="somaGastosExtras" type="number" text-right></ion-input>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.somaGastosExtras.dirty && formGroup.controls.somaGastosExtras.errors" margin-left>Valor inválido</div>
 
-    <div padding></div>
-
     <ion-item class="bg-text">
-      <ion-label>Soma investimentos:</ion-label>
+      <ion-label>Investimentos:
+        <div class="div-tip">(ex: aplicação na poupança, CDB etc.)</div>
+      </ion-label>
       <ion-label>
         <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
       </ion-label>
-      <ion-input formControlName="somaInvestimentos" type="number" placeholder="valor em R$"></ion-input>
+      <ion-input formControlName="somaInvestimentos" type="number" text-right></ion-input>
     </ion-item>
     <div class="error-form" *ngIf="formGroup.controls.somaInvestimentos.dirty && formGroup.controls.somaInvestimentos.errors"
+      margin-left>Valor inválido</div>
+
+    <ion-item class="bg-text">
+      <ion-label>Despesas Correntes:
+        <div class="div-tip">(preenchimento automático)</div>
+      </ion-label>
+      <ion-label>
+        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
+      </ion-label>
+      <ion-input formControlName="somaDespesasCorrentes" type="number" text-right></ion-input>
+    </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.somaDespesasCorrentes.dirty && formGroup.controls.somaDespesasCorrentes.errors"
       margin-left>Valor inválido</div>
 
     <div padding></div>

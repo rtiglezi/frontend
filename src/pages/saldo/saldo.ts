@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
 import { ContaService } from '../../services/domain/conta.service';
 import { SaldoDTO } from '../../models/saldo.dto';
+import { SaldoService } from '../../services/domain/saldo.service';
 
 @IonicPage()
 @Component({
@@ -9,27 +10,60 @@ import { SaldoDTO } from '../../models/saldo.dto';
   templateUrl: 'saldo.html',
 })
 export class SaldoPage {
-  item : SaldoDTO[] = []
-  itemsSaldo = [];
+  
+  paramFromConta : SaldoDTO[] = []
+  arraySaldos = [];
+ 
+  arrayAnos : String[] = [];
+  data = new Date();
+  
+  ano = this.data.getFullYear();
 
+
+    
   constructor(
       public navCtrl: NavController, 
       public navParams: NavParams,
       public contaService: ContaService,
+      public saldoService: SaldoService,
+      public alertCtrl: AlertController,
+      public events: Events,
+      private toast: ToastController
     ) {
+      this.populaAnos();
+  }
+
+  checkSel(a : string) : boolean{
+    if (a == this.ano.toString()){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  populaAnos(){
+    for (let _x = this.ano; _x >= this.ano-20; _x--){
+      this.arrayAnos.push(_x.toString());
+    }
+    if (this.navParams.data.ano) {
+      this.ano = this.navParams.data.ano;
+    }
+  }
+
+  onSelectChange(e){
+    this.ano = e;
+    this.read(this.navParams.data.id, e);
   }
 
   ionViewDidLoad() {
-    this.item = this.navParams.data;
-    this.read(this.navParams.data.id);
-    
+    this.paramFromConta = this.navParams.data;
+    this.read(this.navParams.data.id, this.ano);
   }
 
-
-  read(id){
-    this.contaService.lastSaldo(id)
+  read(id, ano){
+    this.contaService.lastSaldo(id, ano)
     .subscribe(response => {
-      this.itemsSaldo = response;
+      this.arraySaldos = response;
     },
     error => {
       if (error.status == 403) {
@@ -39,12 +73,49 @@ export class SaldoPage {
   }
 
   create() {
-    this.navCtrl.push('SaldoEditPage');
+    this.paramFromConta["isNewData"] = true;
+    this.paramFromConta["ano"] = this.ano;
+    this.navCtrl.push('SaldoEditPage', this.paramFromConta);
   }
 
 
-  update(obj) {
-    this.navCtrl.push('SaldoEditPage', obj);
+  update(itemFromView) {
+    delete itemFromView.conta.usuario;
+    this.navCtrl.push('SaldoEditPage', itemFromView);
   }
+
+  delete(obj) {
+    let alert = this.alertCtrl.create({
+      title: "Exclusão de registro.",
+      message: "Deseja realmente excluir?",
+      enableBackdropDismiss: false,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            this.saldoService.delete(obj.id)
+            .subscribe(() => {
+              let index = this.arraySaldos.indexOf(obj);
+              this.arraySaldos.splice(index, 1);
+              this.showOk("Registro deletado com sucesso.");
+            },
+            () => {
+            });
+          }
+        },
+        {
+          text: "Não"
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showOk(msg) {
+    this.toast.create({ message: msg, position: 'bottom', duration: 2000 }).present();
+    this.navCtrl.setRoot('ContaPage');
+    this.paramFromConta.["ano"] = this.ano;
+    this.navCtrl.push('SaldoPage', this.paramFromConta);
+  } 
 
 }

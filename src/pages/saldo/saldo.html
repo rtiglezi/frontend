@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar>
@@ -7,45 +6,76 @@
 
 </ion-header>
 
-
 <ion-content>
- 
+
   <ion-card>
     <ion-item>
-    <ion-row>
-      <ion-col>
-        <strong>
-          {{ item.nome }} 
-        </strong>
-        <p>Tipo: {{ item.tipoContaDescricao }}</p>
-      </ion-col>
-    </ion-row>
-  </ion-item>
+      <ion-row>
+        <ion-col>
+          <strong class="nome-conta">
+            {{ paramFromConta.nome }}
+          </strong>
+          <p>Tipo: {{ paramFromConta.tipoContaDescricao }}</p>
+        </ion-col>
+        <ion-col align="right">
 
-  <hr/>
 
-  <div *ngFor="let item of itemsSaldo; index as i" class="div-saldos">
-      
-      <div class="div-buttom">
-          <ion-icon name="create" (click)="update(item)"></ion-icon>
-      </div>
 
-      {{ item.mesDescricao }}/{{ item.ano }} - Saldo: {{ item.saldoMes }}
+        </ion-col>
+      </ion-row>
+    </ion-item>
 
-      <hr/>
+    <hr/>
 
-  </div>
+    <ion-item>
+      <ion-label>Listar saldos do ano:</ion-label>
+      <ion-select  (ionChange)="onSelectChange($event)">
+        <ion-option *ngFor="let item of arrayAnos" [selected]="checkSel(item)" value={{item}}>{{item}}</ion-option>
+      </ion-select>
+    </ion-item>
 
-  <div padding>
-  <button color="secondary" ion-button block icon-cash padding (click)="create()">
-    <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
-    Novo Saldo Mensal
-  </button>
-  </div>
+    <ion-grid>
+      <ion-row class="nome-conta">
+        <ion-col>
+          Mês
+        </ion-col>
+        <ion-col align="right">
+          Saldo
+        </ion-col>
+        <ion-col align="center">
+          Ação
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let itemFromView of arraySaldos">
+        <ion-col>
+          {{ itemFromView.mesDescricao }}/{{ itemFromView.ano }}
+        </ion-col>
+        <ion-col align="right">
+          {{ itemFromView.saldoMes }}
+        </ion-col>
+        <ion-col align="center" block>
+          <span class="div-buttom" (click)="update(itemFromView)">
+            <ion-icon name="create"></ion-icon>
+          </span>
+          <span class="div-buttom" block (click)="delete(itemFromView)">
+            <ion-icon name="trash"></ion-icon>
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
+    <div padding>
+      <button color="secondary" ion-button block icon-cash padding (click)="create()">
+        <ion-icon class="add-icon" name="md-add-circle"></ion-icon>
+        Novo Saldo Mensal
+      </button>
+    </div>
 
   </ion-card>
 
-    
+
 
 
 </ion-content>

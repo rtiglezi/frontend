@@ -61,9 +61,6 @@ export class ContaEditPage {
      .subscribe(() => {
       this.showOk("Registro adicionado com sucesso.");
       }, () => {});
-
-      console.log(this.formGroup.value);
-    
       
     } else {
   
@@ -71,8 +68,6 @@ export class ContaEditPage {
       .subscribe(() => {
         this.showOk("Registro editado com sucesso.");
        }, () => {});
-
-       console.log(this.formGroup.value);
 
     }
   }

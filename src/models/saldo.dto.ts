@@ -10,6 +10,7 @@ export interface SaldoDTO {
     saldoMes : string;
     somaGastosExtras : string;
     somaInvestimentos : string;
+    somaDespesasCorrentes : string;
     conta : ContaDTO;
 }
 
