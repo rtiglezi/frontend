@@ -1,6 +1,24 @@
 page-saldo-edit {
-    .div-tip {
+    .form-label {
         color: grey;
-        font-size: 12px;
+        font-size: 15px;
     }
+
+    .form-input {
+        text-align: right;
+    }
+
+    input {
+        text-align: right;
+        width: 100%;
+        height: 40px;
+        font-size: 25px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        padding: 10px;
+        color: black;
+    }
+
 }

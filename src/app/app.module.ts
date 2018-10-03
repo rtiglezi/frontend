@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
@@ -12,9 +12,15 @@ import { ErrorInterceptorProvider } from '../interceptors/error-interceptor';
 import { AuthService } from '../services/auth.service';
 import { StorageService } from '../services/storage.service';
 import { AuthInterceptorProvider } from '../interceptors/auth-interceptor';
-import { ChangepassPage } from '../pages/changepass/changepass';
 import { ContaService } from '../services/domain/conta.service';
 import { SaldoService } from '../services/domain/saldo.service';
+
+import { IonCurrencyMaskModule } from '@pluritech/ion-currencymask';
+
+import { registerLocaleData } from '@angular/common';
+import ptBr from '@angular/common/locales/pt';
+registerLocaleData(ptBr);
+
 
 
 @NgModule({
@@ -24,7 +30,12 @@ import { SaldoService } from '../services/domain/saldo.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp),
+    IonCurrencyMaskModule,
+    IonicModule.forRoot(MyApp, {
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+  })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,7 +51,8 @@ import { SaldoService } from '../services/domain/saldo.service';
     AuthService,
     StorageService,
     ContaService,
-    SaldoService
+    SaldoService,
+    {provide: LOCALE_ID, useValue: 'pt-PT'}
   ]
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { ContaService } from '../../services/domain/conta.service';
 import { ContaDTO } from '../../models/conta.dto';
 
@@ -11,18 +11,27 @@ import { ContaDTO } from '../../models/conta.dto';
 export class ContaPage {
 
   items: ContaDTO[] = [];
-  
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public contaService: ContaService,
     public alertCtrl: AlertController,
-    private toast: ToastController
+    private toast: ToastController,
+    public loadingCtrl: LoadingController
   ) {
   }
 
   ionViewDidLoad() {
     this.read();
+  }
+
+  presentLoading(msg : string) {
+    let loader = this.loadingCtrl.create({
+      content: msg
+    });
+    loader.present();
+    return loader;
   }
 
   create() {
@@ -36,7 +45,6 @@ export class ContaPage {
     },
     error => {
       if (error.status == 403) {
-        
       }
     });
   }
@@ -54,13 +62,16 @@ export class ContaPage {
         {
           text: 'Sim',
           handler: () => {
+            let loader = this.presentLoading("Excluindo o registro...");
             this.contaService.delete(obj.id)
             .subscribe(() => {
               let index = this.items.indexOf(obj);
               this.items.splice(index, 1);
+              loader.dismiss();
               this.showOk("Registro deletado com sucesso.");
             },
             () => {
+              loader.dismiss();
             });
           }
         },

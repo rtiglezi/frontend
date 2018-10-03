@@ -51,7 +51,7 @@
           {{ itemFromView.mesDescricao }}/{{ itemFromView.ano }}
         </ion-col>
         <ion-col align="right">
-          {{ itemFromView.saldoMes }}
+          {{ getFormattedPrice(itemFromView.saldoMes) }}
         </ion-col>
         <ion-col align="center" block>
           <span class="div-buttom" (click)="update(itemFromView)">

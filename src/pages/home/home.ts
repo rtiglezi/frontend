@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../config/api.config';
 
+
 @IonicPage()
 @Component({
   selector: 'page-home',
@@ -25,9 +26,8 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public http: HttpClient,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
   ) {
-    
   }
 
   ionViewWillEnter() {
@@ -44,8 +44,9 @@ export class HomePage {
       this.auth.succefulLogin(response.headers.get('Authorization'));
       this.navCtrl.setRoot('UsuariosPage');
     },
-    error => {});
+    () => {});
   }
+
 
   login() {
     let loader = this.presentLoading();

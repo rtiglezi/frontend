@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { ContaDTO } from '../../models/conta.dto';
 import { ContaService } from '../../services/domain/conta.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -23,18 +23,25 @@ export class ContaEditPage {
       public modelService: ContaService,
       public formBuilder: FormBuilder,
       public storage: StorageService,
-      private toast: ToastController
+      private toast: ToastController,
+      public loadingCtrl: LoadingController
     ) {
     this.createForm();
   }
   
-   
+  presentLoading(msg : string) {
+    let loader = this.loadingCtrl.create({
+      content: msg
+    });
+    loader.present();
+    return loader;
+  }
 
   createForm(){
     this.formGroup = this.formBuilder.group({
       id:        [this.navParams.data.id,''],
-      nome:      [this.navParams.data.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(80)]],
-      tipoConta: [this.navParams.data.tipoConta, [Validators.required]]
+      nome:      [this.navParams.data.nome, [Validators.required, Validators.maxLength(80)]],
+      tipoConta: [this.navParams.data.tipoConta, Validators.required]
     });
   }
 
@@ -55,17 +62,22 @@ export class ContaEditPage {
 
 
   save(){
+   
     if (this.isNewData()) {
-      
+     
+     let loader = this.presentLoading("Inserindo o registro..."); 
      this.modelService.create(this.formGroup.value)
      .subscribe(() => {
+      loader.dismiss();
       this.showOk("Registro adicionado com sucesso.");
       }, () => {});
       
     } else {
   
+      let loader = this.presentLoading("Alterando o registro..."); 
       this.modelService.update(this.formGroup.value)
       .subscribe(() => {
+        loader.dismiss();
         this.showOk("Registro editado com sucesso.");
        }, () => {});
 

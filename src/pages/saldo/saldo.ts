@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Events, ToastController, LoadingController } from 'ionic-angular';
 import { ContaService } from '../../services/domain/conta.service';
 import { SaldoDTO } from '../../models/saldo.dto';
 import { SaldoService } from '../../services/domain/saldo.service';
@@ -28,9 +28,18 @@ export class SaldoPage {
       public saldoService: SaldoService,
       public alertCtrl: AlertController,
       public events: Events,
-      private toast: ToastController
+      private toast: ToastController,
+      public loadingCtrl: LoadingController
     ) {
       this.populaAnos();
+  }
+
+  presentLoading(msg : string) {
+    let loader = this.loadingCtrl.create({
+      content: msg
+    });
+    loader.present();
+    return loader;
   }
 
   checkSel(a : string) : boolean{
@@ -67,7 +76,6 @@ export class SaldoPage {
     },
     error => {
       if (error.status == 403) {
-        
       }
     });
   }
@@ -93,13 +101,16 @@ export class SaldoPage {
         {
           text: 'Sim',
           handler: () => {
+            let loader = this.presentLoading("Excluindo o registro...");
             this.saldoService.delete(obj.id)
             .subscribe(() => {
               let index = this.arraySaldos.indexOf(obj);
               this.arraySaldos.splice(index, 1);
+              loader.dismiss();
               this.showOk("Registro deletado com sucesso.");
             },
             () => {
+              loader.dismiss();
             });
           }
         },
@@ -114,8 +125,12 @@ export class SaldoPage {
   showOk(msg) {
     this.toast.create({ message: msg, position: 'bottom', duration: 2000 }).present();
     this.navCtrl.setRoot('ContaPage');
-    this.paramFromConta.["ano"] = this.ano;
+    this.paramFromConta["ano"] = this.ano;
     this.navCtrl.push('SaldoPage', this.paramFromConta);
   } 
+
+  getFormattedPrice(price: number) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
+}
 
 }

@@ -8,18 +8,17 @@
 
   <form [formGroup]="formGroup" (ngSubmit)="save(); $event.preventDefault()">
 
-    <p class="text-label">Dados iniciais do extrato:</p>
+    <div class="text-label">ANO E MÊS DO EXTRATO:</div>
 
     <ion-item>
-      <ion-label>Ano:</ion-label>
+      <ion-label stacked>Ano:</ion-label>
       <ion-select formControlName="ano">
         <ion-option *ngFor="let item of arrayAnos" [selected]="checkSel(item)" value={{item}}>{{item}}</ion-option>
       </ion-select>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
-    
+
     <ion-item>
-      <ion-label>Mês:</ion-label>
+      <ion-label stacked>Mês:</ion-label>
       <ion-select formControlName="mes">
         <ion-option value=1>Janeiro</ion-option>
         <ion-option value=2>Fevereiro</ion-option>
@@ -35,101 +34,102 @@
         <ion-option value=12>Dezembro</ion-option>
       </ion-select>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.ano.dirty && formGroup.controls.ano.errors" margin-left>Valor inválido</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Saldo final do mês:</ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="saldoMes" type="number" text-right></ion-input>
+    <p>&nbsp;</p>
+
+    <div class="text-label">DADOS INICIAIS:</div>
+
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Saldo Mês Anterior:<br/>
+          <input type="tel" formControlName="saldoMesAnterior" id="saldoMesAnterior" #saldoMesAnterior (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col align="right">
+          <div #sinalSMA class="div-buttom" (click)="checkNegativo('sma')">
+            inverter sinal
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.saldoMes.dirty && formGroup.controls.saldoMes.errors" margin-left>Valor inválido</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Saldo do mês anterior:</ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="saldoMesAnterior" type="number" text-right></ion-input>
+
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Saldo Mês Atual:<br/>
+          <input type="tel" formControlName="saldoMes" id="saldoMes" #saldoMes (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col></ion-col>
+        <ion-col align="right">
+          <div #sinalSM class="div-buttom" (click)="checkNegativo('sm')">
+            inverter sinal
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.saldoMesAnterior.dirty && formGroup.controls.saldoMesAnterior.errors" margin-left>Valor inválido</div>
 
+    <p>&nbsp;</p>
 
-    <div padding></div>
+    <div class="text-label">ENTRADAS-Totalização das Receitas:</div>
 
-
-
-    <p class="text-label">Totalização das Receitas (créditos):</p>
-
-
-    <ion-item class="bg-text">
-      <ion-label>
-        Receitas correntes:
-        <div class="div-tip">(ex.: salário, remuneração)</div>
-      </ion-label>
-
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaReceitasCorrentes" type="number" text-right></ion-input>
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Receitas Correntes:<br/>
+          <input type="tel" formControlName="somaReceitasCorrentes" id="somaReceitasCorrentes" #somaReceitasCorrentes (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.somaReceitasCorrentes.dirty && formGroup.controls.somaReceitasCorrentes.errors"
-      margin-left>Valor inválido</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Receitas extraordinárias:
-        <div class="div-tip">(ex.: restituição do IR, empréstimo etc)</div>
-      </ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaReceitasExtras" type="number" text-right></ion-input>
+
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Receitas Extras:<br/>
+          <input type="tel" formControlName="somaReceitasExtras" id="somaReceitasExtras" #somaReceitasExtras (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.somaReceitasExtras.dirty && formGroup.controls.somaReceitasExtras.errors"
-      margin-left>Valor inválido</div>
 
-    <div padding></div>
+    <p>&nbsp;</p>
 
-    <p class="text-label">Totalização dos Gastos (débitos):</p>
+    <div class="text-label">SAÍDAS-Totalização dos Gastos:</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Gastos extraordinários:
-        <div class="div-tip">(ex: compra de carro, reforma de casa)</div>
-      </ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaGastosExtras" type="number" text-right></ion-input>
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Gastos Extras:<br/>
+          <input type="tel" formControlName="somaGastosExtras" id="somaGastosExtras" #somaGastosExtras (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.somaGastosExtras.dirty && formGroup.controls.somaGastosExtras.errors" margin-left>Valor inválido</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Investimentos:
-        <div class="div-tip">(ex: aplicação na poupança, CDB etc.)</div>
-      </ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaInvestimentos" type="number" text-right></ion-input>
+    <ion-item>
+      <ion-row>
+        <ion-col class="form-label">
+          Investimentos:<br/>
+          <input type="tel" formControlName="somaInvestimentos" id="somaInvestimentos" #somaInvestimentos (keyup)="fVal($event.target, $event)">
+        </ion-col>
+      </ion-row>
     </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.somaInvestimentos.dirty && formGroup.controls.somaInvestimentos.errors"
-      margin-left>Valor inválido</div>
 
-    <ion-item class="bg-text">
-      <ion-label>Despesas Correntes:
-        <div class="div-tip">(preenchimento automático)</div>
-      </ion-label>
-      <ion-label>
-        <ion-icon ios="ios-calendar" md="md-ios-calendar"></ion-icon>
-      </ion-label>
-      <ion-input formControlName="somaDespesasCorrentes" type="number" text-right></ion-input>
-    </ion-item>
-    <div class="error-form" *ngIf="formGroup.controls.somaDespesasCorrentes.dirty && formGroup.controls.somaDespesasCorrentes.errors"
-      margin-left>Valor inválido</div>
+    <ion-item>
+        <ion-row>
+          <ion-col class="form-label">
+            Despesas Correntes:<br/>
+            <input type="tel" formControlName="somaDespesasCorrentes" id="somaDespesasCorrentes" #somaDespesasCorrentes (keyup)="fVal($event.target, $event)">
+          </ion-col>
+        </ion-row>
+      </ion-item>
 
-    <div padding></div>
-
+    <p>&nbsp;</p>
     <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
+
   </form>
 </ion-content>
