@@ -12,14 +12,15 @@
 
     <ion-item>
       <ion-label stacked>Ano:</ion-label>
-      <ion-select formControlName="ano">
+      <ion-select disabled formControlName="ano">
         <ion-option *ngFor="let item of arrayAnos" [selected]="checkSel(item)" value={{item}}>{{item}}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
       <ion-label stacked>Mês:</ion-label>
-      <ion-select formControlName="mes">
+      <ion-select [disabled]="disabledMes" formControlName="mes" (ionChange)="writePreviousBalance()">
+        <ion-option value="" selected>[selcione o mês]</ion-option>
         <ion-option value=1>Janeiro</ion-option>
         <ion-option value=2>Fevereiro</ion-option>
         <ion-option value=3>Março</ion-option>
@@ -34,6 +35,8 @@
         <ion-option value=12>Dezembro</ion-option>
       </ion-select>
     </ion-item>
+    <div class="error-form" *ngIf="formGroup.controls.mes.errors" margin-left>Selecione o mês no campo acima.</div>
+
 
     <p>&nbsp;</p>
 
@@ -43,7 +46,7 @@
       <ion-row>
         <ion-col class="form-label">
           Saldo Mês Anterior:<br/>
-          <input type="tel" formControlName="saldoMesAnterior" id="saldoMesAnterior" #saldoMesAnterior (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="saldoMesAnterior" id="saldoMesAnterior" #saldoMesAnterior (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
       <ion-row>
@@ -61,7 +64,7 @@
       <ion-row>
         <ion-col class="form-label">
           Saldo Mês Atual:<br/>
-          <input type="tel" formControlName="saldoMes" id="saldoMes" #saldoMes (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="saldoMes" id="saldoMes" #saldoMes (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
       <ion-row>
@@ -82,7 +85,7 @@
       <ion-row>
         <ion-col class="form-label">
           Receitas Correntes:<br/>
-          <input type="tel" formControlName="somaReceitasCorrentes" id="somaReceitasCorrentes" #somaReceitasCorrentes (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="somaReceitasCorrentes" id="somaReceitasCorrentes" #somaReceitasCorrentes (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
     </ion-item>
@@ -92,7 +95,7 @@
       <ion-row>
         <ion-col class="form-label">
           Receitas Extras:<br/>
-          <input type="tel" formControlName="somaReceitasExtras" id="somaReceitasExtras" #somaReceitasExtras (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="somaReceitasExtras" id="somaReceitasExtras" #somaReceitasExtras (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
     </ion-item>
@@ -105,7 +108,7 @@
       <ion-row>
         <ion-col class="form-label">
           Gastos Extras:<br/>
-          <input type="tel" formControlName="somaGastosExtras" id="somaGastosExtras" #somaGastosExtras (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="somaGastosExtras" id="somaGastosExtras" #somaGastosExtras (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
     </ion-item>
@@ -114,7 +117,7 @@
       <ion-row>
         <ion-col class="form-label">
           Investimentos:<br/>
-          <input type="tel" formControlName="somaInvestimentos" id="somaInvestimentos" #somaInvestimentos (keyup)="fVal($event.target, $event)">
+          <input type="tel" placeholder="0,00"  formControlName="somaInvestimentos" id="somaInvestimentos" #somaInvestimentos (keyup)="fVal($event.target, $event)">
         </ion-col>
       </ion-row>
     </ion-item>
@@ -123,13 +126,15 @@
         <ion-row>
           <ion-col class="form-label">
             Despesas Correntes:<br/>
-            <input type="tel" formControlName="somaDespesasCorrentes" id="somaDespesasCorrentes" #somaDespesasCorrentes (keyup)="fVal($event.target, $event)">
+            <input type="tel" placeholder="0,00"  formControlName="somaDespesasCorrentes" name="somaDespesasCorrentes" id="somaDespesasCorrentes" #somaDespesasCorrentes (keyup)="fVal($event.target, $event)">
           </ion-col>
+          <div [style.visibility]="inconsistentValue ? 'visible' : 'hidden' " class="error-form" #inconsistencia id="inconsistencia" name="inconsistencia" margin-left>Valor inconsistente. Verifque todos os valores informados.</div>
         </ion-row>
       </ion-item>
 
+
     <p>&nbsp;</p>
-    <button ion-button block type="submit" [disabled]="formGroup.invalid" color="danger">{{ lblButton }}</button>
+    <button ion-button block type="submit" [disabled]="formGroup.invalid || inconsistentValue" color="danger">{{ lblButton }}</button>
 
   </form>
 </ion-content>

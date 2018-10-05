@@ -15,9 +15,9 @@ export class ChangepassPage {
 
   email = this.storage.getLocalUser().email;
   formGroup: FormGroup;
-  
+
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public storage: StorageService,
     public formBuilder: FormBuilder,
@@ -27,28 +27,28 @@ export class ChangepassPage {
     public auth: AuthService
   ) {
     this.formGroup = this.formBuilder.group({
-      email: [this.email,[Validators.required]],
-      senha: ['',[Validators.required]],
-      novaSenha: ['',[Validators.required, Validators.minLength(6)]],
-      confirmarSenha: ['','']
+      email: [this.email, [Validators.required]],
+      senha: ['', [Validators.required]],
+      novaSenha: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarSenha: ['', '']
     }, {
-      validator: this.matchPassword
-    });
+        validator: this.matchPassword
+      });
   }
 
   matchPassword(ac: AbstractControl) {
     let password = ac.get('novaSenha').value;
     let confirmPassword = ac.get('confirmarSenha').value;
-     if(password != confirmPassword) {
-         ac.get('confirmarSenha').setErrors( {matchPassword: true} )
-     } else {
-         return null
-     }
- }
+    if (password != confirmPassword) {
+      ac.get('confirmarSenha').setErrors({ matchPassword: true })
+    } else {
+      return null
+    }
+  }
 
 
   ionViewDidLoad() {
-   
+
   }
 
 
@@ -85,9 +85,9 @@ export class ChangepassPage {
         this.changePassOk();
         loader.dismiss();
       },
-     error => {
-      loader.dismiss();
-     });
+        error => {
+          loader.dismiss();
+        });
   }
 
   changePassOk() {

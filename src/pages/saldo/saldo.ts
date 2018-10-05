@@ -70,7 +70,18 @@ export class SaldoPage {
   }
 
   read(id, ano){
-    this.contaService.lastSaldo(id, ano)
+    this.contaService.getSaldosByYear(id, ano)
+    .subscribe(response => {
+      this.arraySaldos = response;
+    },
+    error => {
+      if (error.status == 403) {
+      }
+    });
+  }
+
+  readByMonth(id, ano, mes){
+    this.saldoService.getSaldoByMonth(id, ano, mes)
     .subscribe(response => {
       this.arraySaldos = response;
     },

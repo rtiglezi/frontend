@@ -4,6 +4,7 @@ import { API_CONFIG } from "../../config/api.config";
 import { StorageService } from "../storage.service";
 import { Observable } from "rxjs";
 import { SaldoDTO } from "../../models/saldo.dto";
+import { ContaDTO } from "../../models/conta.dto";
 
 @Injectable()
 export class SaldoService {
@@ -30,6 +31,10 @@ export class SaldoService {
     
     read(id : number) : Observable<SaldoDTO[]> {
         return this.http.get<SaldoDTO[]>(`${API_CONFIG.baseUrl}/saldos/${id}`);
+    }
+
+    getSaldoByMonth(contaId, ano, mes){
+        return this.http.get<ContaDTO[]>(`${API_CONFIG.baseUrl}/contas/${contaId}/saldos/${ano}/${mes}`);
     }
 
 

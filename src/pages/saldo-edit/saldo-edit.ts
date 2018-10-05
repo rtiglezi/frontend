@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, Events, LoadingController } from 'ionic-angular';
 import { SaldoService } from '../../services/domain/saldo.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '../../services/storage.service';
 import { SaldoDTO } from '../../models/saldo.dto';
 
@@ -23,14 +23,21 @@ export class SaldoEditPage {
   @ViewChild('sinalSMA') domSinalSMA: ElementRef;
   @ViewChild('sinalSM') domSinalSM: ElementRef;
 
+  @ViewChild('mes') domMes: ElementRef;
+
   model: SaldoDTO;
   formGroup: FormGroup;
   lblButton = "";
+  disabledMes = false;
+  inconsistentValue = false;
+
 
   arrayAnos: String[] = [];
   data = new Date();
   ano = this.data.getFullYear();
-  mes = this.data.getMonth() + 1;
+  //mes = this.data.getMonth() + 1;
+  mes = null;
+  saldoMesAnterior = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -85,12 +92,11 @@ export class SaldoEditPage {
 
     this.formGroup = this.formBuilder.group({
       id: [this.navParams.data.id, ''],
-      mes: [this.mes, ''],
+      mes: [this.mes, Validators.required],
       ano: [this.navParams.data.ano, ''],
 
       saldoMesAnterior: [this.getFormatFromBuilder(this.navParams.data.saldoMesAnterior), ''],
       saldoMes: [this.getFormatFromBuilder(this.navParams.data.saldoMes), ''],
-
       somaReceitasCorrentes: [this.getFormatFromBuilder(this.navParams.data.somaReceitasCorrentes), ''],
       somaReceitasExtras: [this.getFormatFromBuilder(this.navParams.data.somaReceitasExtras), ''],
       somaGastosExtras: [this.getFormatFromBuilder(this.navParams.data.somaGastosExtras), ''],
@@ -112,7 +118,8 @@ export class SaldoEditPage {
         this.setNegativo('sm');
       }
     }
-    this.isNewData();
+    this.writePreviousBalance();
+    this.inconsistentValue = false;
   }
 
 
@@ -127,8 +134,8 @@ export class SaldoEditPage {
       };
       return true;
     } else {
-      console.log("mes pos insert=>" + this.mes);
       this.lblButton = "Editar Saldo";
+      this.disabledMes = true;
       return false;
     }
   }
@@ -146,7 +153,6 @@ export class SaldoEditPage {
   save() {
 
     this.changeNumberFormat();
-    console.log(this.formGroup.value);
 
     if (this.isNewData()) {
       let loader = this.presentLoading("Inserindo o registro...");
@@ -156,7 +162,7 @@ export class SaldoEditPage {
           this.showOk("Registro adicionado com sucesso.");
         }, () => {
           loader.dismiss();
-         });
+        });
 
     } else {
       let loader = this.presentLoading("Alterando o registro...");
@@ -166,7 +172,7 @@ export class SaldoEditPage {
           this.showOk("Registro editado com sucesso.");
         }, () => {
           loader.dismiss();
-         });
+        });
     }
   }
 
@@ -210,6 +216,14 @@ export class SaldoEditPage {
     let gastos = somaGastosExtras + somaInvestimentos;
     let gastosCorrentes = (((saldoMesAnterior + receitas) - gastos) - saldoMes);
     this.domSomaDespesasCorrentes.value = gastosCorrentes;
+
+    if ( gastosCorrentes < 0 ) {
+      this.inconsistentValue = true;
+    
+    } else {
+      this.inconsistentValue = false;
+    }
+
     this.domSomaDespesasCorrentes.valueIonInput = this.domSomaDespesasCorrentes.value;
 
     this.domSomaDespesasCorrentes.nativeElement.value = this.getFormatFromBuilder(gastosCorrentes.toFixed(2));
@@ -218,12 +232,12 @@ export class SaldoEditPage {
 
   setNegativo(campo) {
     if (campo === 'sma') {
-      this.domSaldoMesAnterior.nativeElement.value = "-" + this.domSaldoMesAnterior.nativeElement.value.toString().replace("-","");
+      this.domSaldoMesAnterior.nativeElement.value = "-" + this.domSaldoMesAnterior.nativeElement.value.toString().replace("-", "");
       this.domSaldoMesAnterior.nativeElement.style.color = "red";
       this.domSaldoMesAnterior.nativeElement.style.background = "rgba(253, 1, 1, 0.062)";
     }
     if (campo === 'sm') {
-      this.domSaldoMes.nativeElement.value = "-" + this.domSaldoMes.nativeElement.value.toString().replace("-","");
+      this.domSaldoMes.nativeElement.value = "-" + this.domSaldoMes.nativeElement.value.toString().replace("-", "");
       this.domSaldoMes.nativeElement.style.color = "red";
       this.domSaldoMes.nativeElement.style.background = "rgba(253, 1, 1, 0.062)";
     }
@@ -270,11 +284,12 @@ export class SaldoEditPage {
 
   getFormatFromBuilder(v) {
     if (v) {
-      v = v.toString();
-      if (v.indexOf(".") == -1) {
-        v = v + "00";
+      v = this.getFormattedPrice(v);
+      v = v.replace('R$', '').replace(/\s/, '');
+    } else {
+      if (v == 0) {
+        v = '';
       }
-      v = this.getFormatFromView(v);
     }
     return v;
   }
@@ -319,4 +334,42 @@ export class SaldoEditPage {
   getFormattedPrice(price: number) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
   }
+
+
+  writePreviousBalance() {
+
+    this.isNewData();
+
+    let contaId = this.formGroup.value.conta.id;
+    let ano = this.formGroup.value.ano;
+    let mes = this.formGroup.value.mes;
+
+
+    if (mes == 1) {
+      mes = 12;
+      ano = ano - 1;
+    } else {
+      mes = mes - 1;
+    }
+
+    console.log(" conta=" + contaId, " ano=" + ano, " mes=" + mes);
+
+
+    this.modelService.getSaldoByMonth(contaId, ano, mes)
+      .subscribe(response => {
+        if (response) {
+          this.domSaldoMesAnterior.nativeElement.value = this.getFormatFromBuilder(response["saldoMes"].toString());
+          this.domSaldoMesAnterior.nativeElement.disabled = true;
+          this.domSinalSMA.nativeElement.style.visibility = 'hidden';
+        } else {
+          this.domSaldoMesAnterior.nativeElement.disabled = false;
+          this.domSinalSMA.nativeElement.style.visibility = 'visible';
+        }
+      },
+        error => {
+          if (error.status == 403) {
+          }
+        });
+  }
+
 }

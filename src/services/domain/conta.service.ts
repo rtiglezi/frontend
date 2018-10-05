@@ -55,7 +55,8 @@ export class ContaService {
     };
 
 
-    lastSaldo(contaId, ano){
+    getSaldosByYear(contaId, ano){
         return this.http.get<ContaDTO[]>(`${API_CONFIG.baseUrl}/contas/${contaId}/saldos/${ano}`);
     }
+
 }
