@@ -25,6 +25,11 @@ export class SaldoEditPage {
 
   @ViewChild('mes') domMes: ElementRef;
 
+  @ViewChild('inputSomaReceitasCorrentes') domInputSomaReceitasCorrentes: ElementRef;
+  @ViewChild('inputSomaReceitasExtras') domInputSomaReceitasExtras: ElementRef;
+  @ViewChild('inputSomaGastosExtras') domInputSomaGastosExtras: ElementRef;
+  @ViewChild('inputSomaInvestimentos') domInputSomaInvestimentos: ElementRef;
+
   model: SaldoDTO;
   formGroup: FormGroup;
   lblButton = "";
@@ -235,11 +240,15 @@ export class SaldoEditPage {
       this.domSaldoMesAnterior.nativeElement.value = "-" + this.domSaldoMesAnterior.nativeElement.value.toString().replace("-", "");
       this.domSaldoMesAnterior.nativeElement.style.color = "red";
       this.domSaldoMesAnterior.nativeElement.style.background = "rgba(253, 1, 1, 0.062)";
+      this.domSinalSMA.nativeElement.innerHTML = 'D';
+      this.domSinalSMA.nativeElement.style.color = 'red';
     }
     if (campo === 'sm') {
       this.domSaldoMes.nativeElement.value = "-" + this.domSaldoMes.nativeElement.value.toString().replace("-", "");
       this.domSaldoMes.nativeElement.style.color = "red";
       this.domSaldoMes.nativeElement.style.background = "rgba(253, 1, 1, 0.062)";
+      this.domSinalSM.nativeElement.innerHTML = 'D';
+      this.domSinalSM.nativeElement.style.color = 'red';
     }
   }
 
@@ -248,11 +257,15 @@ export class SaldoEditPage {
       this.domSaldoMesAnterior.nativeElement.value = this.domSaldoMesAnterior.nativeElement.value.replace("-", "");
       this.domSaldoMesAnterior.nativeElement.style.color = "";
       this.domSaldoMesAnterior.nativeElement.style.background = "";
+      this.domSinalSMA.nativeElement.innerHTML = 'C';
+      this.domSinalSMA.nativeElement.style.color = '';
     }
     if (campo === 'sm') {
       this.domSaldoMes.nativeElement.value = this.domSaldoMes.nativeElement.value.replace("-", "");
       this.domSaldoMes.nativeElement.style.color = "";
       this.domSaldoMes.nativeElement.style.background = "";
+      this.domSinalSM.nativeElement.innerHTML = 'C';
+      this.domSinalSM.nativeElement.style.color = '';
     }
   }
 
@@ -338,6 +351,12 @@ export class SaldoEditPage {
 
   writePreviousBalance() {
 
+    this.domSomaReceitasCorrentes.nativeElement.disabled = true;
+    this.domSomaReceitasExtras.nativeElement.disabled = true;
+    this.domSomaGastosExtras.nativeElement.disabled = true;
+    this.domSomaInvestimentos.nativeElement.disabled = true;
+
+
     this.isNewData();
 
     let contaId = this.formGroup.value.conta.id;
@@ -351,8 +370,6 @@ export class SaldoEditPage {
     } else {
       mes = mes - 1;
     }
-
-    console.log(" conta=" + contaId, " ano=" + ano, " mes=" + mes);
 
 
     this.modelService.getSaldoByMonth(contaId, ano, mes)
@@ -371,5 +388,30 @@ export class SaldoEditPage {
           }
         });
   }
+
+  somaValor(componente, input){
+    let val = componente.nativeElement.value;
+    if (input.nativeElement.value){
+      if (val) {
+        val = val.replace(".","").replace(",",".");
+        val = parseFloat(val);
+        input.nativeElement.value = input.nativeElement.value.replace(".","").replace(",",".")
+        componente.nativeElement.value = (val + parseFloat(input.nativeElement.value)) * 100;
+        componente.nativeElement.value = this.getFormatFromView(componente.nativeElement.value);
+      } else {
+        componente.nativeElement.value = input.nativeElement.value.replace(".","").replace(",",".");
+        componente.nativeElement.value = this.getFormatFromView(componente.nativeElement.value);
+      } 
+      input.nativeElement.value = null;
+      this.updateValues();
+    }
+  }
+
+  apagar(campo){
+    campo.nativeElement.value = null;
+    this.updateValues();
+  }
+
+  
 
 }

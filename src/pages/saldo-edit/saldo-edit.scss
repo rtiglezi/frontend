@@ -10,7 +10,7 @@ page-saldo-edit {
 
     input {
         text-align: right;
-        width: 100%;
+        width: 87%;
         height: 40px;
         font-size: 25px;
         display: inline-block;
@@ -20,5 +20,44 @@ page-saldo-edit {
         padding: 10px;
         color: black;
     }
+
+    .inputSoma {
+        text-align: right;
+        width: 80%;
+        height: 30px;
+        font-size: 20px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        padding: 10px;
+        color: black;
+    }
+
+.div-buttom {
+    display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#DDD;
+    box-shadow: 2px 2px 5px -1px rgba(0,0,0,0.2);
+    vertical-align:middle;
+    text-align: center;
+    padding: 9px 13px;
+}
+
+.div-buttom-soma {
+    display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#DDD;
+    box-shadow: 2px 2px 5px -1px rgba(0,0,0,0.2);
+    vertical-align:middle;
+    text-align: center;
+    padding: 3px 10px;
+}
+
+.adicionavel {
+ 
+}
 
 }
