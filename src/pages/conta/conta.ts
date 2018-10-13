@@ -13,7 +13,7 @@ export class ContaPage {
   items: ContaDTO[] = [];
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public contaService: ContaService,
     public alertCtrl: AlertController,
@@ -26,7 +26,7 @@ export class ContaPage {
     this.read();
   }
 
-  presentLoading(msg : string) {
+  presentLoading(msg: string) {
     let loader = this.loadingCtrl.create({
       content: msg
     });
@@ -37,16 +37,16 @@ export class ContaPage {
   create() {
     this.navCtrl.push('ContaEditPage');
   }
-  
-  read(){
+
+  read() {
     this.contaService.readAll()
-    .subscribe(response => {
-      this.items = response;
-    },
-    error => {
-      if (error.status == 403) {
-      }
-    });
+      .subscribe(response => {
+        this.items = response;
+      },
+        error => {
+          if (error.status == 403) {
+          }
+        });
   }
 
   update(obj) {
@@ -64,15 +64,15 @@ export class ContaPage {
           handler: () => {
             let loader = this.presentLoading("Excluindo o registro...");
             this.contaService.delete(obj.id)
-            .subscribe(() => {
-              let index = this.items.indexOf(obj);
-              this.items.splice(index, 1);
-              loader.dismiss();
-              this.showOk("Registro deletado com sucesso.");
-            },
-            () => {
-              loader.dismiss();
-            });
+              .subscribe(() => {
+                let index = this.items.indexOf(obj);
+                this.items.splice(index, 1);
+                loader.dismiss();
+                this.showOk("Registro deletado com sucesso.");
+              },
+                () => {
+                  loader.dismiss();
+                });
           }
         },
         {
@@ -86,10 +86,33 @@ export class ContaPage {
   showOk(msg) {
     this.toast.create({ message: msg, position: 'bottom', duration: 2000 }).present();
     this.navCtrl.setRoot('ContaPage');
-  } 
+  }
 
   goSaldos(obj) {
     this.navCtrl.push('SaldoPage', obj);
+  }
+
+  goGrafico(obj) {
+    let arrayMeses = [];
+    let arrayReceitasCorrentes = [];
+    let arrayDespesasCorrentes = [];
+    this.contaService.getSaldosByConta(obj.id)
+      .subscribe(response => {
+        response.map(r => {
+          arrayMeses.push(r["mesDescricao"].substring(0,3) + "/" + r["ano"]);
+          arrayReceitasCorrentes.push(r["somaReceitasCorrentes"]);
+          arrayDespesasCorrentes.push(r["somaDespesasCorrentes"]);
+        })
+        this.navCtrl.push('GraficoPage', {
+          meses: arrayMeses,
+          receitas: arrayReceitasCorrentes,
+          despesas: arrayDespesasCorrentes
+        });
+      },
+        error => {
+          if (error.status == 403) {
+          }
+        });
   }
 
 }

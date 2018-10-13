@@ -30,6 +30,24 @@ export class SaldoEditPage {
   @ViewChild('inputSomaGastosExtras') domInputSomaGastosExtras: ElementRef;
   @ViewChild('inputSomaInvestimentos') domInputSomaInvestimentos: ElementRef;
 
+  @ViewChild('trashSomaReceitasCorrentes') domTrashSomaReceitasCorrentes: ElementRef;
+  @ViewChild('trashSomaReceitasExtras') domTrashSomaReceitasExtras: ElementRef;
+  @ViewChild('trashSomaGastosExtras') domTrashSomaGastosExtras: ElementRef;
+  @ViewChild('trashSomaInvestimentos') domTrashSomaInvestimentos: ElementRef;
+
+  @ViewChild('adSomaReceitasCorrentes') domAdSomaReceitasCorrentes: ElementRef;
+  @ViewChild('ipSomaReceitasCorrentes') domIpSomaReceitasCorrentes: ElementRef;
+
+  @ViewChild('adSomaReceitasExtras') domAdSomaReceitasExtras: ElementRef;
+  @ViewChild('ipSomaReceitasExtras') domIpSomaReceitasExtras: ElementRef;
+
+  @ViewChild('adSomaGastosExtras') domAdSomaGastosExtras: ElementRef;
+  @ViewChild('ipSomaGastosExtras') domIpSomaGastosExtras: ElementRef;
+
+  @ViewChild('adSomaInvestimentos') domAdSomaInvestimentos: ElementRef;
+  @ViewChild('ipSomaInvestimentos') domIpSomaInvestimentos: ElementRef;
+
+
   model: SaldoDTO;
   formGroup: FormGroup;
   lblButton = "";
@@ -40,7 +58,6 @@ export class SaldoEditPage {
   arrayAnos: String[] = [];
   data = new Date();
   ano = this.data.getFullYear();
-  //mes = this.data.getMonth() + 1;
   mes = null;
   saldoMesAnterior = 0;
 
@@ -222,9 +239,9 @@ export class SaldoEditPage {
     let gastosCorrentes = (((saldoMesAnterior + receitas) - gastos) - saldoMes);
     this.domSomaDespesasCorrentes.value = gastosCorrentes;
 
-    if ( gastosCorrentes < 0 ) {
+    if (gastosCorrentes < 0) {
       this.inconsistentValue = true;
-    
+
     } else {
       this.inconsistentValue = false;
     }
@@ -295,66 +312,124 @@ export class SaldoEditPage {
     this.updateValues();
   }
 
-  getFormatFromBuilder(v) {
-    if (v) {
-      v = this.getFormattedPrice(v);
-      v = v.replace('R$', '').replace(/\s/, '');
+  getFormatFromBuilder(valorCampo) {
+    
+    
+    if (!valorCampo) {
+      valorCampo = 0;
     } else {
-      if (v == 0) {
-        v = '';
+      if (valorCampo.toString().indexOf(".")==-1) {
+        valorCampo = parseInt(valorCampo) * 100;
       }
     }
-    return v;
-  }
 
-  getFormatFromView(v) {
-    let isNegative: boolean;
-    isNegative = false;
-    if (v.indexOf("-") != -1) {
-      isNegative = true;
+    for (let i = 0; i < valorCampo.length; i++) {
+      if (valorCampo[i] == '.' || valorCampo[i] == ',') {
+        valorCampo = valorCampo.replace(valorCampo[i], '');
+      };
     }
-    v = v.replace("-", "")
-      .replace(".", "")
-      .replace(",", "")
-      .replace(" ", "")
-      .replace("*", "")
-      .replace("(", "")
-      .replace(")", "")
-      .replace(";", "");
-    v = this.getFormattedPrice(v / 100);
-    v = v.replace("R$", "").trim();
-    if (isNegative) {
-      v = "-" + v;
+
+    valorCampo = parseInt(valorCampo).toString();
+
+    if (valorCampo.length < 3) {
+      if (valorCampo.length == 1) {
+        valorCampo = parseInt(valorCampo);
+        valorCampo = "00" + valorCampo.toString();
+      }
+      if (valorCampo.length == 2) {
+        valorCampo = parseInt(valorCampo);
+        valorCampo = "0" + valorCampo.toString();
+      }
     }
-    return v;
-  }
 
 
+    valorCampo = valorCampo.split('').reverse().join('');
 
-  fVal(campo, e) {
-    let array = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-    if (array.indexOf(e.key) != -1) {
-      campo.value = this.getFormatFromView(campo.value);
-    } else {
-      campo.value = campo.value.replace(e.key, "");
+    let valorCampoFormatado = '';
+    for (let i = 0; i < valorCampo.length; i++) {
+      valorCampoFormatado = valorCampoFormatado + valorCampo[i];
+      if (i == 1) {
+        valorCampoFormatado = valorCampoFormatado + ',';
+      };
+      if ((i == 4 || i == 7 || i == 10 ) && ((i + 1) != valorCampo.length)) {
+        valorCampoFormatado = valorCampoFormatado + '.';
+      };
     }
-    if (e.key == "Backspace" || e.key == "Delete") {
-      campo.value = this.getFormatFromView(campo.value);
-    };
+
+    valorCampo = valorCampoFormatado.split('').reverse().join('');
+
+    return valorCampo;
+
+    }
+
+
+  f (campo, e) {
+
+    let valorCampo = campo.value;
+   
+    const arrayNumbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    if (arrayNumbers.indexOf(e.key)==-1) {
+      valorCampo = valorCampo.replace(e.key,'');
+    }
+    
+    if (!valorCampo) {
+      valorCampo = 0;
+    }
+
+    for (let i = 0; i < valorCampo.length; i++) {
+      if (valorCampo[i] == '.' || valorCampo[i] == ',') {
+        valorCampo = valorCampo.replace(valorCampo[i], '');
+      };
+    }
+
+    valorCampo = parseInt(valorCampo).toString();
+
+    if (valorCampo.length < 3) {
+      if (valorCampo.length == 1) {
+        valorCampo = parseInt(valorCampo);
+        valorCampo = "00" + valorCampo.toString();
+      }
+      if (valorCampo.length == 2) {
+        valorCampo = parseInt(valorCampo);
+        valorCampo = "0" + valorCampo.toString();
+      }
+    }
+
+
+    valorCampo = valorCampo.split('').reverse().join('');
+
+    campo.value = '';
+
+    let valorCampoFormatado = '';
+    for (let i = 0; i < valorCampo.length; i++) {
+      valorCampoFormatado = valorCampoFormatado + valorCampo[i];
+      if (i == 1) {
+        valorCampoFormatado = valorCampoFormatado + ',';
+      };
+      if ((i == 4 || i == 7 || i == 10 ) && ((i + 1) != valorCampo.length)) {
+        valorCampoFormatado = valorCampoFormatado + '.';
+      };
+    }
+
+    valorCampo = valorCampoFormatado.split('').reverse().join('');
+
+    campo.value = valorCampo;
+
     this.updateValues();
-  }
-
-  getFormattedPrice(price: number) {
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
   }
 
 
   writePreviousBalance() {
 
-    this.domSomaReceitasCorrentes.nativeElement.disabled = true;
-    this.domSomaReceitasExtras.nativeElement.disabled = true;
-    this.domSomaGastosExtras.nativeElement.disabled = true;
-    this.domSomaInvestimentos.nativeElement.disabled = true;
+    this.domTrashSomaReceitasCorrentes.nativeElement.style.visibility = 'hidden';
+    this.domTrashSomaReceitasExtras.nativeElement.style.visibility = 'hidden';
+    this.domTrashSomaGastosExtras.nativeElement.style.visibility = 'hidden';
+    this.domTrashSomaInvestimentos.nativeElement.style.visibility = 'hidden';
+
+    this.domIpSomaReceitasCorrentes.nativeElement.style.visibility = 'hidden';
+    this.domIpSomaReceitasExtras.nativeElement.style.visibility = 'hidden';
+    this.domIpSomaGastosExtras.nativeElement.style.visibility = 'hidden';
+    this.domIpSomaInvestimentos.nativeElement.style.visibility = 'hidden';
 
 
     this.isNewData();
@@ -387,31 +462,52 @@ export class SaldoEditPage {
           if (error.status == 403) {
           }
         });
+
+    this.updateValues();
+    console.log("foi");
   }
 
-  somaValor(componente, input){
+  adValor(ad, ip) {
+    if (ip.nativeElement.style.visibility != "visible") {
+      ip.nativeElement.style.visibility = "visible";
+      ad.nativeElement.innerHTML = "cancelar";
+    } else {
+      ip.nativeElement.style.visibility = "hidden";
+      ad.nativeElement.innerHTML = "somar";
+    }
+  }
+
+
+  somaValor(componente, input, btn, ad, ip) {
     let val = componente.nativeElement.value;
-    if (input.nativeElement.value){
+    if (input.nativeElement.value) {
       if (val) {
-        val = val.replace(".","").replace(",",".");
+        val = val.replace(".", "").replace(",", ".");
         val = parseFloat(val);
-        input.nativeElement.value = input.nativeElement.value.replace(".","").replace(",",".")
+        input.nativeElement.value = input.nativeElement.value.replace(".", "").replace(",", ".")
         componente.nativeElement.value = (val + parseFloat(input.nativeElement.value)) * 100;
-        componente.nativeElement.value = this.getFormatFromView(componente.nativeElement.value);
+        componente.nativeElement.value = this.fVal(componente.nativeElement.value);
       } else {
-        componente.nativeElement.value = input.nativeElement.value.replace(".","").replace(",",".");
-        componente.nativeElement.value = this.getFormatFromView(componente.nativeElement.value);
-      } 
+        componente.nativeElement.value = input.nativeElement.value.replace(".", "").replace(",", ".");
+        componente.nativeElement.value = this.fVal(componente.nativeElement.value);
+      }
+      btn.nativeElement.style.visibility = 'visible';
+      ad.nativeElement.innerHTML = 'somar';
+      ip.nativeElement.style.visibility = 'hidden';
       input.nativeElement.value = null;
+
       this.updateValues();
     }
   }
 
-  apagar(campo){
+  apagar(campo, btn) {
     campo.nativeElement.value = null;
+    btn.nativeElement.style.visibility = 'hidden';
     this.updateValues();
   }
 
-  
+  cancel() {
+    this.navCtrl.pop();
+  }
 
 }

@@ -26,7 +26,7 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public http: HttpClient,
-    private toastCtrl: ToastController,
+    private toastCtrl: ToastController
   ) {
   }
 

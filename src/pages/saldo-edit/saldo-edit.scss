@@ -21,9 +21,22 @@ page-saldo-edit {
         color: black;
     }
 
+    .input100 {
+        text-align: right;
+        width: 100%;
+        height: 40px;
+        font-size: 25px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        padding: 10px;
+        color: black;
+    }
+
     .inputSoma {
         text-align: right;
-        width: 80%;
+        width: 57%;
         height: 30px;
         font-size: 20px;
         display: inline-block;
